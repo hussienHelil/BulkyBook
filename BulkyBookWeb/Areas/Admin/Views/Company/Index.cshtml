@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Company>
+<partial name="_Notification"/>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Product List</h2>
+        </div>
+        <div class="col-6 text-end">
+        
+            <a class="btn btn-primary" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New Company
+            </a>
+        </div>
+    </div>
+<br /><br />
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Street Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Postal Code</th>
+            <th>Phone Number</th>
+            <th></th>
+        </tr>               
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr id="company_@item.Id">
+                <td>@item.Name</td>
+                <td>@item.StreetAddress</td>
+                <td>@item.City</td>
+                <td>@item.State</td>
+                <td>@item.PostalCode</td>
+                <td>@item.PhoneNumber</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button class="btn btn-danger" onclick="showDeleteConfirmation('@item.Id')"><i class="bi bi-trash-fill"></i> Delete</button>
+                </td>
+            </tr>
+        }
+                
+    </tbody>
+</table>
+</div>
+<script>
+var showDeleteConfirmation = function(id) {
+    Swal.fire({
+      title: 'Do you want to Delete This Company?',
+      showDenyButton: true,
+      //showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+          $.ajax({
+              type: "Delete",
+              url: "Company/Delete?id=" + id,
+              success : function(data) {
+                  if (data == true) {
+                    Swal.fire('Company Deleted Successfully', '', 'success')
+                      $('#company_' + id).remove();
+                  }else{
+                      Swal.fire('Not Delete!', '', 'error')
+                  }
+              }
+          })
+      }
+    })
+}
+</script>

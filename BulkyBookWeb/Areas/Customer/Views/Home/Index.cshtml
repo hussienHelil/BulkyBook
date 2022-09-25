@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Product>
+<div class="row pt-3">
+
+    @foreach(var pr in Model){
+        <div class="col-lg-3 col-md-6">
+            <div class="card border m-1">
+              <img src="@pr.ImageUrl" class="card-img-top" style="height:300px">
+              <div class="card-body">
+                <h5 class="card-title">@pr.Title</h5>
+                <h6 class="card-title">By : @pr.Author</h6>
+                <p class="card-text">price : $@pr.Price.ToString("0.00")</p>
+                <a asp-action="Details" asp-route-producatId="@pr.Id" class="btn btn-primary d-block">Details</a>
+              </div>
+            </div>
+        </div>
+        
+    }
+</div>

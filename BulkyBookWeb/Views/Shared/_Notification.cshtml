@@ -1,0 +1,16 @@
+﻿@if(TempData["success"] != null){
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+       Swal.fire({icon: 'success',title: 'Done',text: '@TempData["success"]',})
+    </script>
+
+}else if(TempData["error"] != null){
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+        Swal.fire({icon: 'error',title: 'Oops...',text: '@TempData["success"]',})
+    </script>
+}
+  
+
+    
+    

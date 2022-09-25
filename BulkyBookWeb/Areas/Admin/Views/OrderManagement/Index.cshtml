@@ -1,0 +1,118 @@
+﻿@model IEnumerable<OrderHeader>
+@{
+    var status = Context.Request.Query["status"];
+     var pending="text-primary";
+     var inprocess="text-primary";
+     var completed="text-primary";
+     var approved="text-primary";
+     var all="text-primary";
+
+    switch (status)
+    {
+        case "pending":
+            pending = "active text-white";
+            break;
+            case "inprocess":
+            inprocess = "active text-white";
+            break;
+            case "completed":
+            completed = "active text-white";
+            break;
+            case "approved":
+            approved = "active text-white";
+            break;
+            default:
+            all = "active text-white";
+            break;
+    }
+
+}
+<partial name="_Notification"/>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Order List</h2>
+        </div>
+        <div class="col-6">
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="OrderManageMent"
+                    asp-action="Index" asp-route-status="inprocess">
+                    <li class="list-group-item @inprocess">In Process</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="OrderManageMent"
+                    asp-action="Index" asp-route-status="pending">
+                    <li class="list-group-item @pending">Payment Pending</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="OrderManageMent"
+                    asp-action="Index" asp-route-status="completed">
+                    <li class="list-group-item @completed">Completed</li>
+                </a>
+                 <a style="text-decoration:none;" asp-controller="OrderManageMent"
+                    asp-action="Index" asp-route-status="approved">
+                    <li class="list-group-item @approved">Approved</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="OrderManageMent"
+                    asp-action="Index" asp-route-status="all">
+                    <li class="list-group-item @all">All</li>
+                </a>
+            </ul>
+		</div>
+    </div>
+<br /><br />
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>status</th>
+            <th>Total</th>
+            <th></th>
+        </tr>               
+    </thead>
+    <tbody>
+        @foreach(var cat in Model)
+        {
+            <tr id="category_@cat.Id">
+                <td>@cat.Id</td>
+                <td>@cat.Name</td>
+                <td>@cat.PhoneNumber</td>
+                <td>@cat.OrderStatus</td>
+                <td>@cat.OrderTotal</td>
+                <td class="text-center">
+                    <a asp-action="Details" asp-route-orderId="@cat.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> </a>
+                </td>
+            </tr>
+        }
+                
+    </tbody>
+</table>
+</div>
+
+<script>
+var showDeleteConfirmation = function(id) {
+    Swal.fire({
+      title: 'Do you want to Delete This Category?',
+      showDenyButton: true,
+      //showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+          $.ajax({
+              type: "Delete",
+              url: "Category/Delete?id=" + id,
+              success : function(data) {
+                  if (data == true) {
+                    Swal.fire('Category Deleted Successfully', '', 'success')
+                      $('#category_' + id).remove();
+                  }else{
+                      Swal.fire('Not Delete!', '', 'error')
+                  }
+              }
+          })
+      }
+    })
+}
+</script>

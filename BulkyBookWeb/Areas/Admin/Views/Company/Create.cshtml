@@ -1,0 +1,54 @@
+﻿@model Models.Company
+
+<div class="border mt-4 p-3 row">
+    <div class="pb-2">
+        <h2 class="text-primary">Create Company</h2>
+        <hr />
+    </div>
+    <form method="post" action="Create">
+        <div class="row">
+             <div class="mb-3 col-12">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-12">
+            <label asp-for="StreetAddress"></label>
+            <input asp-for="StreetAddress" class="form-control" cols="3"/>
+            <span asp-validation-for="StreetAddress" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="City"></label>
+            <input asp-for="City" class="form-control"/>
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="State"></label>
+            <input asp-for="State" class="form-control"/>
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="PostalCode"></label>
+            <input asp-for="PostalCode" class="form-control"/>
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+        <div class="mb-3 col-6">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control"/>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+       
+        <div class="text-end">
+            <button type="submit" asp-action="Create" class="btn btn-primary" style="width:150px">Create</button>
+            <a asp-action="Index" type="button" class="btn btn-secondary"    style="width:150px">Back To List</a>
+        </div>
+        </div>
+       
+    </form>
+    
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}

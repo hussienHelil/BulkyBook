@@ -1,0 +1,73 @@
+﻿@using BulkyBook.Models
+@model IEnumerable<CoverType>
+@{
+    var count = 0;
+}
+<partial name="_Notification"/>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Cover Type List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New Cover Type
+            </a>
+         </div>
+    </div>
+<br /><br />
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            @foreach(var item in Model)
+            {
+                count++;   
+                <tr id="coverType_@item.Id">
+                    <td>@count</td>
+                    <td>@item.Name</td>
+                    <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button onclick="showDeleteConfirmation('@item.Id')" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+                </td>
+                </tr>
+            }
+
+            
+        </tbody>
+    </table>
+</div>
+
+<script>
+var showDeleteConfirmation = function(id) {
+    Swal.fire({
+      title: 'Do you want to Delete This Cover Type?',
+      showDenyButton: true,
+      //showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+          $.ajax({
+              type: "Delete",
+              url: "CoverType/Delete?id=" + id,
+              success : function(data) {
+                  if (data == true) {
+                    Swal.fire('Cover Type Deleted Successfully', '', 'success')
+                      $('#coverType_' + id).remove();
+                  }else{
+                      Swal.fire('Not Delete!', '', 'error')
+                  }
+              }
+          })
+      }
+    })
+}
+</script>

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Category>
+<partial name="_Notification"/>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+        
+            <a class="btn btn-primary" asp-action="Create">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New Category
+            </a>
+        </div>
+    </div>
+<br /><br />
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Display Order</th>
+            <th></th>
+        </tr>               
+    </thead>
+    <tbody>
+        @foreach(var cat in Model)
+        {
+            <tr id="category_@cat.Id">
+                <td>@cat.Name</td>
+                <td>@cat.DisplayOrder</td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@cat.Id" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button class="btn btn-danger" onclick="showDeleteConfirmation('@cat.Id')"><i class="bi bi-trash-fill"></i> Delete</button>
+                </td>
+            </tr>
+        }
+                
+    </tbody>
+</table>
+</div>
+
+<script>
+var showDeleteConfirmation = function(id) {
+    Swal.fire({
+      title: 'Do you want to Delete This Category?',
+      showDenyButton: true,
+      //showCancelButton: true,
+      confirmButtonText: 'Delete',
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+          $.ajax({
+              type: "Delete",
+              url: "Category/Delete?id=" + id,
+              success : function(data) {
+                  if (data == true) {
+                    Swal.fire('Category Deleted Successfully', '', 'success')
+                      $('#category_' + id).remove();
+                  }else{
+                      Swal.fire('Not Delete!', '', 'error')
+                  }
+              }
+          })
+      }
+    })
+}
+</script>
